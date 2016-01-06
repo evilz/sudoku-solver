@@ -21,7 +21,7 @@ namespace Sudoku
 
                 if (x == 3) { break; }
                 // Sudoku s0 = new Sudoku();
-                var generator = new SudokuGen();
+                
                 var backtracking = new SudokuBacktracking();
                 var annealingSolver = new SimulatedAnnealingSolver();
 
@@ -41,24 +41,24 @@ namespace Sudoku
 
                         default: difficulty = SudokuDifficulty.Medium; break;
                     }
-                    generator.NewSudoku(difficulty);
-                    DisplaySudoku(generator.Sudoku);
+                    var sudoku = SudokuGenerator.NewSudoku(difficulty);
+                    DisplaySudoku(sudoku);
 
                     Console.WriteLine("\nWould you like to Solve this puzzle too? (Enter 1, 2 or 3) \n1.Yes, using Backtracking \n2.Yes, using Simulated Annealing \n3. No");
                     var x1 = int.Parse(Input.ReadLine());
                     if (x1 == 1)
                     {
-                        backtracking.init(generator.Sudoku);
+                        backtracking.init(sudoku);
                         backtracking.run();
                         Console.WriteLine("\nSolution found. ");
-                        DisplaySudoku(backtracking.Sudoku);
+                        DisplaySudoku(backtracking.SudokuBoard);
                         Console.WriteLine("\nOriginal puzzle was:");
 
-                        DisplaySudoku(generator.Sudoku);
+                        DisplaySudoku(sudoku);
                     }
                     if (x1 == 2)
                     {
-                        var temp = generator.Sudoku.Clone();
+                        var temp = sudoku.Clone();
                         
                         annealingSolver.SimulatedAnnealingSolve(temp); Console.WriteLine("\nOriginal puzzle was:");
                         for (int row = 0; row < 9; row++)
@@ -66,10 +66,10 @@ namespace Sudoku
                             Console.WriteLine();
                             if (row == 0) { Console.WriteLine("\n -----------------------"); }
                             for (int col = 0; col < 9; col++)
-                                if (generator.Sudoku[row, col] != 0)
+                                if (sudoku[row, col] != 0)
                                 {
                                     if (col == 0) { Console.Write("| "); }
-                                    Console.Write(generator.Sudoku[row, col] + " ");
+                                    Console.Write(sudoku[row, col] + " ");
                                     if (col == 2 | col == 5 | col == 8) { Console.Write("| "); }
                                 }
                                 else {
@@ -93,7 +93,7 @@ namespace Sudoku
 
                     if (y == 1)
                     { //take sudoku Input to Solve
-                        var temp = new Sudoku(SudokuDifficulty.Easy);
+                        var temp = new SudokuBoard();
                         Console.WriteLine("\nEnter rows 1 to 9. Represent blanks as 0s.");
                         String a;
                         for (int i = 0; i < 9; i++)
@@ -107,7 +107,7 @@ namespace Sudoku
                         }
 
                         backtracking.init(temp); backtracking.run(); Console.WriteLine("\nSolution found. ");
-                        DisplaySudoku(backtracking.Sudoku);
+                        DisplaySudoku(backtracking.SudokuBoard);
                         Console.WriteLine("\nOriginal puzzle was:");
                         for (int row = 0; row < 9; row++)
                         {
@@ -132,16 +132,16 @@ namespace Sudoku
 
                     else { // that is, y==2, ie. Generate puzzle to Solve
 
-                        var sudoku = generator.NewSudoku(SudokuDifficulty.Easy);
+                        var sudoku = SudokuGenerator.NewSudoku(SudokuDifficulty.Easy);
 
                         Console.WriteLine("\nWould you like to Solve this puzzle using: (Enter 1 or 2) \n1. Backtracking \n2. Simulated Annealing");
                         int x1 = int.Parse(Input.ReadLine());
                         if (x1 == 1)
                         {
-                            backtracking.init(generator.Sudoku); backtracking.run();
+                            backtracking.init(sudoku); backtracking.run();
                         }
                         else {
-                            annealingSolver.SimulatedAnnealingSolve(generator.Sudoku);
+                            annealingSolver.SimulatedAnnealingSolve(sudoku);
                         }
 
 
@@ -154,7 +154,7 @@ namespace Sudoku
             }
         }
 
-        private static void DisplaySudoku(Sudoku sudoku)
+        private static void DisplaySudoku(SudokuBoard sudokuBoard)
         {
             for (int row = 0; row < 9; row++)
             {
@@ -163,13 +163,13 @@ namespace Sudoku
 
                 for (int col = 0; col < 9; col++)
                 {
-                    if (sudoku[row, col] != 0)
+                    if (sudokuBoard[row, col] != 0)
                     {
                         if (col == 0)
                         {
                             Console.Write("| ");
                         }
-                        Console.Write(sudoku[row, col] + " ");
+                        Console.Write(sudokuBoard[row, col] + " ");
                         if (col == 2 | col == 5 | col == 8)
                         {
                             Console.Write("| ");

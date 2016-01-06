@@ -6,21 +6,21 @@ namespace Sudoku
 {
     public class SudokuBacktracking
     {
-        public Sudoku Sudoku;
+        public SudokuBoard SudokuBoard;
         
-        void createModel(Sudoku sudoku)
+        void createModel(SudokuBoard sudokuBoard)
         {
-            Sudoku = sudoku;
+            SudokuBoard = sudokuBoard;
         }
         
 
         /** creates representation of Sudoku grid */
 
-        public Sudoku init(Sudoku sudoku)
+        public SudokuBoard init(SudokuBoard sudokuBoard)
         {
-            createModel(sudoku);
+            createModel(sudokuBoard);
             // updateView() ;
-            return Sudoku;
+            return SudokuBoard;
         }
         
 
@@ -29,7 +29,7 @@ namespace Sudoku
         protected bool checkRow(int row, int num)
         {
             for (int col = 0; col < 9; col++)
-                if (Sudoku[row, col] == num)
+                if (SudokuBoard[row, col] == num)
                     return false;
 
             return true;
@@ -40,7 +40,7 @@ namespace Sudoku
         protected bool checkCol(int col, int num)
         {
             for (int row = 0; row < 9; row++)
-                if (Sudoku[row, col] == num)
+                if (SudokuBoard[row, col] == num)
                     return false;
 
             return true;
@@ -55,7 +55,7 @@ namespace Sudoku
 
             for (int r = 0; r < 3; r++)
                 for (int c = 0; c < 3; c++)
-                    if (Sudoku[row + r, col + c] == num)
+                    if (SudokuBoard[row + r, col + c] == num)
                         return false;
 
             return true;
@@ -94,7 +94,7 @@ namespace Sudoku
 
 
             // If cell is not empty, continue with Next cell
-            if (Sudoku[row, col] != 0)
+            if (SudokuBoard[row, col] != 0)
                 next(row, col);
             else
             {
@@ -112,7 +112,7 @@ namespace Sudoku
                     int x = ints[num - 1];
                     if (checkRow(row, x) && checkCol(col, x) && checkBox(row, col, x))
                     {
-                        Sudoku[row, col] = x;
+                        SudokuBoard[row, col] = x;
                         //  updateView() ;
 
                         // Delegate work on the Next cell to a recursive call
@@ -121,7 +121,7 @@ namespace Sudoku
                 }
 
                 // No valid Number found, erase and return to caller
-                Sudoku[row, col] = 0;
+                SudokuBoard[row, col] = 0;
                 // updateView() ;
                 // Console.WriteLine();
 

@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cell.cs" />
     <Compile Include="Extension.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -51,7 +52,7 @@
     <Compile Include="Sudoku.cs" />
     <Compile Include="SudokuBacktracking.cs" />
     <Compile Include="SudokuDifficulty.cs" />
-    <Compile Include="SudokuGen.cs" />
+    <Compile Include="SudokuGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
