@@ -18,7 +18,7 @@ namespace Sudoku
         }
 
         //for input board, empty squares are = 0
-        public void SimulatedAnnealingSolve(int[,] board)
+        public void SimulatedAnnealingSolve(Sudoku sudoku)
         {
             squaresUnchangable = new bool[81];
 
@@ -27,7 +27,7 @@ namespace Sudoku
             {
                 for (int j = 0; j < 9; j++)
                 {
-                    if (board[i,j] != 0)
+                    if (sudoku[i,j] != 0)
                         squaresUnchangable[i * 9 + j] = true;
                 }
             }
@@ -39,8 +39,8 @@ namespace Sudoku
             for (int row = 0; row < 3; row++)
                 for (int col = 0; col < 3; col++)
                 {
-                    if (board[row,col] != 0)
-                        numbers.Remove(board[row,col]);
+                    if (sudoku[row,col] != 0)
+                        numbers.Remove(sudoku[row,col]);
                 }
             
             numbers = numbers.Shuffle().ToList();
@@ -48,9 +48,9 @@ namespace Sudoku
             for (int row = 0; row < 3; row++)
                 for (int col = 0; col < 3; col++)
                 {
-                    if (board[row,col] == 0)
+                    if (sudoku[row,col] == 0)
                     {
-                        board[row,col] = numbers[0];
+                        sudoku[row,col] = numbers[0];
                         numbers.RemoveAt(0);
                     }
                 }
@@ -60,17 +60,17 @@ namespace Sudoku
             for (int row = 0; row < 3; row++)
                 for (int col = 3; col < 6; col++)
                 {
-                    if (board[row,col] != 0) { }
-                        numbers.RemoveAt(board[row,col]);
+                    if (sudoku[row,col] != 0) { }
+                        numbers.RemoveAt(sudoku[row,col]);
                 }
 
             numbers = numbers.Shuffle().ToList();
             for (int row = 0; row < 3; row++)
                 for (int col = 3; col < 6; col++)
                 {
-                    if (board[row,col] == 0)
+                    if (sudoku[row,col] == 0)
                     {
-                        board[row,col] = numbers[0];
+                        sudoku[row,col] = numbers[0];
                         numbers.RemoveAt(0);
                     }
                 }
@@ -80,17 +80,17 @@ namespace Sudoku
             for (int row = 0; row < 3; row++)
                 for (int col = 6; col < 9; col++)
                 {
-                    if (board[row,col] != 0)
-                        numbers.RemoveAt(board[row,col]);
+                    if (sudoku[row,col] != 0)
+                        numbers.RemoveAt(sudoku[row,col]);
                 }
 
             numbers = numbers.Shuffle().ToList();
             for (int row = 0; row < 3; row++)
                 for (int col = 6; col < 9; col++)
                 {
-                    if (board[row,col] == 0)
+                    if (sudoku[row,col] == 0)
                     {
-                        board[row,col] = numbers[0];
+                        sudoku[row,col] = numbers[0];
                         numbers.RemoveAt(0);
                     }
                 }
@@ -100,17 +100,17 @@ namespace Sudoku
             for (int row = 3; row < 6; row++)
                 for (int col = 0; col < 3; col++)
                 {
-                    if (board[row,col] != 0)
-                        numbers.RemoveAt(board[row,col]);
+                    if (sudoku[row,col] != 0)
+                        numbers.RemoveAt(sudoku[row,col]);
                 }
 
             numbers = numbers.Shuffle().ToList();
             for (int row = 3; row < 6; row++)
                 for (int col = 0; col < 3; col++)
                 {
-                    if (board[row,col] == 0)
+                    if (sudoku[row,col] == 0)
                     {
-                        board[row,col] = numbers[0];
+                        sudoku[row,col] = numbers[0];
                         numbers.RemoveAt(0);
                     }
                 }
@@ -120,16 +120,16 @@ namespace Sudoku
             for (int row = 3; row < 6; row++)
                 for (int col = 3; col < 6; col++)
                 {
-                    if (board[row,col] != 0)
-                        numbers.RemoveAt(board[row,col]);
+                    if (sudoku[row,col] != 0)
+                        numbers.RemoveAt(sudoku[row,col]);
                 }
             numbers = numbers.Shuffle().ToList();
             for (int row = 3; row < 6; row++)
                 for (int col = 3; col < 6; col++)
                 {
-                    if (board[row,col] == 0)
+                    if (sudoku[row,col] == 0)
                     {
-                        board[row,col] = numbers[0];
+                        sudoku[row,col] = numbers[0];
                         numbers.RemoveAt(0);
                     }
                 }
@@ -139,16 +139,16 @@ namespace Sudoku
             for (int row = 3; row < 6; row++)
                 for (int col = 6; col < 9; col++)
                 {
-                    if (board[row,col] != 0)
-                        numbers.RemoveAt(board[row,col]);
+                    if (sudoku[row,col] != 0)
+                        numbers.RemoveAt(sudoku[row,col]);
                 }
             numbers = numbers.Shuffle().ToList();
             for (int row = 3; row < 6; row++)
                 for (int col = 6; col < 9; col++)
                 {
-                    if (board[row,col] == 0)
+                    if (sudoku[row,col] == 0)
                     {
-                        board[row,col] = numbers[0];
+                        sudoku[row,col] = numbers[0];
                         numbers.RemoveAt(0);
                     }
                 }
@@ -158,17 +158,17 @@ namespace Sudoku
             for (int row = 6; row < 9; row++)
                 for (int col = 0; col < 3; col++)
                 {
-                    if (board[row,col] != 0)
-                        numbers.RemoveAt(board[row,col]);
+                    if (sudoku[row,col] != 0)
+                        numbers.RemoveAt(sudoku[row,col]);
                 }
 
             numbers = numbers.Shuffle().ToList();
             for (int row = 6; row < 9; row++)
                 for (int col = 0; col < 3; col++)
                 {
-                    if (board[row,col] == 0)
+                    if (sudoku[row,col] == 0)
                     {
-                        board[row,col] = numbers[0];
+                        sudoku[row,col] = numbers[0];
                         numbers.RemoveAt(0);
                     }
                 }
@@ -178,16 +178,16 @@ namespace Sudoku
             for (int row = 6; row < 9; row++)
                 for (int col = 3; col < 6; col++)
                 {
-                    if (board[row,col] != 0)
-                        numbers.RemoveAt(board[row,col]);
+                    if (sudoku[row,col] != 0)
+                        numbers.RemoveAt(sudoku[row,col]);
                 }
             numbers = numbers.Shuffle().ToList();
             for (int row = 6; row < 9; row++)
                 for (int col = 3; col < 6; col++)
                 {
-                    if (board[row,col] == 0)
+                    if (sudoku[row,col] == 0)
                     {
-                        board[row,col] = numbers[0];
+                        sudoku[row,col] = numbers[0];
                         numbers.RemoveAt(0);
                     }
                 }
@@ -197,16 +197,16 @@ namespace Sudoku
             for (int row = 6; row < 9; row++)
                 for (int col = 6; col < 9; col++)
                 {
-                    if (board[row,col] != 0)
-                        numbers.RemoveAt(board[row,col]);
+                    if (sudoku[row,col] != 0)
+                        numbers.RemoveAt(sudoku[row,col]);
                 }
             numbers = initNumbers(numbers);
             for (int row = 6; row < 9; row++)
                 for (int col = 6; col < 9; col++)
                 {
-                    if (board[row,col] == 0)
+                    if (sudoku[row,col] == 0)
                     {
-                        board[row,col] = numbers[0];
+                        sudoku[row,col] = numbers[0];
                         numbers.RemoveAt(0);
                     }
                 }
@@ -225,10 +225,10 @@ namespace Sudoku
                 Console.WriteLine();
                 if (row == 0) { Console.WriteLine("\n -----------------------"); }
                 for (int col = 0; col < 9; col++)
-                    if (board[row,col] != 0)
+                    if (sudoku[row,col] != 0)
                     {
                         if (col == 0) { Console.Write("| "); }
-                        Console.Write(board[row,col] + " ");
+                        Console.Write(sudoku[row,col] + " ");
                         if (col == 2 | col == 5 | col == 8) { Console.Write("| "); }
                     }
                     else {
@@ -241,10 +241,10 @@ namespace Sudoku
             Console.WriteLine();
 
 
-            recurseSolve(board, .8, 0);
+            recurseSolve(sudoku, .8, 0);
         }
 
-        public int numConflicts(int[,] board)
+        public int numConflicts(Sudoku board)
         {
             int num = 0;
             Dictionary<int, int> numbers = new Dictionary<int, int>();
@@ -266,7 +266,7 @@ namespace Sudoku
                     {
                         num += numbers[j] - 1;
                     }
-                    numbers.Add(j, -1); //reset map for next row
+                    numbers.Add(j, -1); //reset map for Next row
                 }
             }
             //count thru columns
@@ -286,14 +286,14 @@ namespace Sudoku
                     {
                         num += numbers[j] - 1;
                     }
-                    numbers.Add(j, -1); //reset map for next column
+                    numbers.Add(j, -1); //reset map for Next column
                 }
             }
             return num;
         }
 
         // cooling constant = .7
-        public int[,] recurseSolve(int[,] board, double temperature, int iteration)
+        public Sudoku recurseSolve(Sudoku board, double temperature, int iteration)
         {
             int initConflicts = numConflicts(board);
             var rng = new Random();
@@ -358,25 +358,24 @@ namespace Sudoku
 
             Console.WriteLine("x1: " + (xOffset + x1) + " y1: " + (yOffset + y1));
             Console.WriteLine("x2: " + (xOffset + x2) + " y2: " + (yOffset + y2));
-            Console.WriteLine("iteration number: " + iteration);
+            Console.WriteLine("iteration Number: " + iteration);
             iteration++;
 
-            int[,] boardCandidate = new int[9,9];
+            var boardCandidate = board.Clone();
            
-            multiArrayCopy(board, boardCandidate);
             boardCandidate[xOffset + x1,yOffset + y1] = board[xOffset + x2,yOffset + y2];
             boardCandidate[xOffset + x2,yOffset + y2] = board[xOffset + x1,yOffset + y1];
 
             int newConflicts = numConflicts(boardCandidate);
 
             if (newConflicts < initConflicts)
-                multiArrayCopy(boardCandidate, board);
+                board = boardCandidate.Clone();
             else
             {
                 double probability = Math.Exp((initConflicts - newConflicts) / temperature);
                 double random = rng.NextDouble();
                 if (random <= probability)
-                    multiArrayCopy(boardCandidate, board);
+                    board = boardCandidate.Clone();
             }
             /*
             for(int i = 0; i < 9; i++) //print out the new board
@@ -428,55 +427,6 @@ namespace Sudoku
             temperature *= .8; //or .7 or .3
             return temperature;
         }
-
-        public static void main(String[] args)
-        {
-            //String puzzle = ".94...13..............76..2.8..1.....32.........2...6.....5.4.......8..7..63.4..8";
-            String puzzle = "6.2.41..51..2.584.8546.72913..46257.4287531.95.6.1.32...3126.577453...122615.49.3";
-            int[,] board = new int[9,9];
-          
-            for (int i = 0; i < puzzle.Length; i++)
-            {
-                char c = puzzle[i];
-                if (c == '.')
-                    c = '0';
-                board[i/9,i%9] = c - '0'; 
-            }
-            /*
-            for(int i = 0; i < 9; i++) //print out the initial board
-            {
-                for(int j = 0; j < 9; j++)
-                {
-                    Console.Write(board[i][j] + " ");
-                }
-                Console.WriteLine();
-            }
-            Console.WriteLine();
-            */
-
-            for (int row = 0; row < 9; row++)
-            {
-                Console.WriteLine();
-                if (row == 0) { Console.WriteLine("\n -----------------------"); }
-                for (int col = 0; col < 9; col++)
-                    if (board[row,col] != 0)
-                    {
-                        if (col == 0) { Console.Write("| "); }
-                        Console.Write(board[row,col] + " ");
-                        if (col == 2 | col == 5 | col == 8) { Console.Write("| "); }
-                    }
-                    else {
-                        if (col == 0) { Console.Write("| "); }
-                        Console.Write("-" + " ");
-                        if (col == 2 | col == 5 | col == 8) { Console.Write("| "); }
-                    }
-                if (row == 2 | row == 5 | row == 8) { Console.Write("\n -----------------------"); }
-            }
-            Console.WriteLine();
-
-
-            SimulatedAnnealingSolver s = new SimulatedAnnealingSolver();
-            s.SimulatedAnnealingSolve(board);
-        }
+        
     }
 }
