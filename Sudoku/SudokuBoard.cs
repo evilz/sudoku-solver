@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Sudoku
 {
     public class SudokuBoard : IEnumerable<Cell>
     {
-        private const int SIZE = 9;
+        public const int SIZE = 9;
         private readonly int[][] _grid;
 
         public SudokuDifficulty Difficulty { get; set; } = SudokuDifficulty.Easy;
@@ -24,16 +25,19 @@ namespace Sudoku
                         .ToArray();
         }
 
-        public IEnumerable<Cell> EmptyCells
-        {
-            get { return this.Where(cell => cell.IsEmpty); }
-        }
-        
+        public IEnumerable<Cell> EmptyCells => this.Where(cell => cell.IsEmpty);
+
+        public IEnumerable<IEnumerable<int>> Rows => _grid;
+
+        public IEnumerable<IEnumerable<int>> Columns => this.GroupBy(cell => cell.Col).Select(cells => cells.Select(x => x.Val));
+
         public bool IsCellEmpty(int row, int col)
         {
             return new Cell(row,col, this[row, col]).IsEmpty;
         }
-        
+
+        public bool IsCompleted => this.All(IsValid);
+
         public int this[int row,int col]
         {
             get { return _grid[row][col]; }
@@ -44,7 +48,9 @@ namespace Sudoku
                     : value;
             }
         }
-        
+
+        public int[] this[int row] => _grid[row];
+
         public SudokuBoard Clone()
         {
            return new SudokuBoard(this);
@@ -63,9 +69,9 @@ namespace Sudoku
             return GetEnumerator();
         }
 
-        public bool IsValid(int row, int col, int num)
+        public bool IsValid(Cell cell)
         {
-            return CheckRow(row, num) && CheckCol(col, num) && CheckBox(row, col, num);
+            return CheckRow(cell.Row, cell.Val) && CheckCol(cell.Col, cell.Val) && CheckBox(cell.Row, cell.Col, cell.Val);
         }
 
         private bool CheckRow(int row, int num)

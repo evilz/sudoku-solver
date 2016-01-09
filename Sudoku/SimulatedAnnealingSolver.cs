@@ -8,14 +8,7 @@ namespace Sudoku
     {
         bool[] squaresUnchangable;
 
-        public List<int> initNumbers(List<int> numbers)
-        {
-            numbers.Clear();
-            for (int i = 1; i <= 9; i++)
-                numbers.Add(i);
-
-            return numbers;
-        }
+       
 
         //for input board, empty squares are = 0
         public void SimulatedAnnealingSolve(SudokuBoard sudokuBoard)
@@ -34,7 +27,7 @@ namespace Sudoku
 
             //for every 3x3 square, calculate numbers remaining and fill them in randomly
             List<int> numbers = new List<int>();
-            numbers = initNumbers(numbers);
+            numbers = Enumerable.Range(1, 9).ToList();
 
             for (int row = 0; row < 3; row++)
                 for (int col = 0; col < 3; col++)
@@ -55,7 +48,7 @@ namespace Sudoku
                     }
                 }
 
-            numbers = initNumbers(numbers);
+            numbers = Enumerable.Range(1, 9).ToList();
 
             for (int row = 0; row < 3; row++)
                 for (int col = 3; col < 6; col++)
@@ -75,7 +68,7 @@ namespace Sudoku
                     }
                 }
 
-            numbers = initNumbers(numbers);
+            numbers = Enumerable.Range(1, 9).ToList();
 
             for (int row = 0; row < 3; row++)
                 for (int col = 6; col < 9; col++)
@@ -95,7 +88,7 @@ namespace Sudoku
                     }
                 }
 
-            numbers = initNumbers(numbers);
+            numbers = Enumerable.Range(1, 9).ToList();
 
             for (int row = 3; row < 6; row++)
                 for (int col = 0; col < 3; col++)
@@ -115,7 +108,7 @@ namespace Sudoku
                     }
                 }
 
-            numbers = initNumbers(numbers);
+            numbers = Enumerable.Range(1, 9).ToList();
 
             for (int row = 3; row < 6; row++)
                 for (int col = 3; col < 6; col++)
@@ -134,8 +127,7 @@ namespace Sudoku
                     }
                 }
 
-            numbers = initNumbers(numbers);
-
+            numbers = Enumerable.Range(1, 9).ToList();
             for (int row = 3; row < 6; row++)
                 for (int col = 6; col < 9; col++)
                 {
@@ -153,7 +145,7 @@ namespace Sudoku
                     }
                 }
 
-            numbers = initNumbers(numbers);
+            numbers = Enumerable.Range(1, 9).ToList();
 
             for (int row = 6; row < 9; row++)
                 for (int col = 0; col < 3; col++)
@@ -173,7 +165,7 @@ namespace Sudoku
                     }
                 }
 
-            numbers = initNumbers(numbers);
+            numbers = Enumerable.Range(1, 9).ToList();
 
             for (int row = 6; row < 9; row++)
                 for (int col = 3; col < 6; col++)
@@ -192,7 +184,7 @@ namespace Sudoku
                     }
                 }
 
-            numbers = initNumbers(numbers);
+            numbers = Enumerable.Range(1, 9).ToList();
 
             for (int row = 6; row < 9; row++)
                 for (int col = 6; col < 9; col++)
@@ -200,7 +192,7 @@ namespace Sudoku
                     if (sudokuBoard[row,col] != 0)
                         numbers.RemoveAt(sudokuBoard[row,col]);
                 }
-            numbers = initNumbers(numbers);
+            numbers = Enumerable.Range(1, 9).ToList();
             for (int row = 6; row < 9; row++)
                 for (int col = 6; col < 9; col++)
                 {

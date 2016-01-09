@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
+using Sudoku.Solvers;
 
 namespace Sudoku
 {
@@ -20,9 +22,7 @@ namespace Sudoku
                 int x = int.Parse(Input.ReadLine());
 
                 if (x == 3) { break; }
-                // Sudoku s0 = new Sudoku();
                 
-                var backtracking = new SudokuBacktracking();
                 var annealingSolver = new SimulatedAnnealingSolver();
 
                 if (x == 1)
@@ -41,45 +41,29 @@ namespace Sudoku
 
                         default: difficulty = SudokuDifficulty.Medium; break;
                     }
+
                     var sudoku = SudokuGenerator.NewSudoku(difficulty);
                     DisplaySudoku(sudoku);
+
 
                     Console.WriteLine("\nWould you like to Solve this puzzle too? (Enter 1, 2 or 3) \n1.Yes, using Backtracking \n2.Yes, using Simulated Annealing \n3. No");
                     var x1 = int.Parse(Input.ReadLine());
                     if (x1 == 1)
                     {
-                        backtracking.init(sudoku);
-                        backtracking.run();
+                        ISudokuSolver solver = new DeepFirstSearchSolver();
+                        var solution = solver.Solve(sudoku);
                         Console.WriteLine("\nSolution found. ");
-                        DisplaySudoku(backtracking.SudokuBoard);
+                        DisplaySudoku(solution);
                         Console.WriteLine("\nOriginal puzzle was:");
-
                         DisplaySudoku(sudoku);
                     }
+
                     if (x1 == 2)
                     {
                         var temp = sudoku.Clone();
                         
                         annealingSolver.SimulatedAnnealingSolve(temp); Console.WriteLine("\nOriginal puzzle was:");
-                        for (int row = 0; row < 9; row++)
-                        {
-                            Console.WriteLine();
-                            if (row == 0) { Console.WriteLine("\n -----------------------"); }
-                            for (int col = 0; col < 9; col++)
-                                if (sudoku[row, col] != 0)
-                                {
-                                    if (col == 0) { Console.Write("| "); }
-                                    Console.Write(sudoku[row, col] + " ");
-                                    if (col == 2 | col == 5 | col == 8) { Console.Write("| "); }
-                                }
-                                else {
-                                    if (col == 0) { Console.Write("| "); }
-                                    Console.Write("-" + " ");
-                                    if (col == 2 | col == 5 | col == 8) { Console.Write("| "); }
-                                }
-                            if (row == 2 | row == 5 | row == 8) { Console.Write("\n -----------------------"); }
-                        }
-                        Console.WriteLine();
+                        DisplaySudoku(sudoku);
                     }
                     else {
                         Console.WriteLine("\nDone.");
@@ -106,28 +90,15 @@ namespace Sudoku
                             }
                         }
 
-                        backtracking.init(temp); backtracking.run(); Console.WriteLine("\nSolution found. ");
-                        DisplaySudoku(backtracking.SudokuBoard);
+                        var solver = new DeepFirstSearchSolver();
+                        var solution = solver.Solve(temp);
+
+                        Console.WriteLine("\nSolution found. ");
+                        DisplaySudoku(solution);
                         Console.WriteLine("\nOriginal puzzle was:");
-                        for (int row = 0; row < 9; row++)
-                        {
-                            Console.WriteLine();
-                            if (row == 0) { Console.WriteLine("\n -----------------------"); }
-                            for (int col = 0; col < 9; col++)
-                                if (temp[row, col] != 0)
-                                {
-                                    if (col == 0) { Console.Write("| "); }
-                                    Console.Write(temp[row, col] + " ");
-                                    if (col == 2 | col == 5 | col == 8) { Console.Write("| "); }
-                                }
-                                else {
-                                    if (col == 0) { Console.Write("| "); }
-                                    Console.Write("-" + " ");
-                                    if (col == 2 | col == 5 | col == 8) { Console.Write("| "); }
-                                }
-                            if (row == 2 | row == 5 | row == 8) { Console.Write("\n -----------------------"); }
-                        }
-                        Console.WriteLine();
+
+                        DisplaySudoku(temp);
+                       
                     }
 
                     else { // that is, y==2, ie. Generate puzzle to Solve
@@ -138,64 +109,34 @@ namespace Sudoku
                         int x1 = int.Parse(Input.ReadLine());
                         if (x1 == 1)
                         {
-                            backtracking.init(sudoku); backtracking.run();
+                            var solver = new DeepFirstSearchSolver();
+                            var solution = solver.Solve(sudoku);
+                            
                         }
                         else {
                             annealingSolver.SimulatedAnnealingSolve(sudoku);
                         }
-
-
                     }
-
-
                 }
-
-
             }
         }
-
+        
         private static void DisplaySudoku(SudokuBoard sudokuBoard)
         {
-            for (int row = 0; row < 9; row++)
+            for (int i = 0; i < SudokuBoard.SIZE; i++)
             {
-                Console.WriteLine();
-                if (row == 0) { Console.WriteLine("\n -----------------------"); }
+                if ((i) % 3 == 0)
+                {
+                    Console.WriteLine(" -----------------------");
+                }
 
-                for (int col = 0; col < 9; col++)
-                {
-                    if (sudokuBoard[row, col] != 0)
-                    {
-                        if (col == 0)
-                        {
-                            Console.Write("| ");
-                        }
-                        Console.Write(sudokuBoard[row, col] + " ");
-                        if (col == 2 | col == 5 | col == 8)
-                        {
-                            Console.Write("| ");
-                        }
-                    }
-                    else
-                    {
-                        if (col == 0)
-                        {
-                            Console.Write("| ");
-                        }
-                        Console.Write("-" + " ");
-                        if (col == 2 | col == 5 | col == 8)
-                        {
-                            Console.Write("| ");
-                        }
-                    }
-                }
-                if (row == 2 | row == 5 | row == 8)
-                {
-                    Console.Write("\n -----------------------");
-                }
+                var row = sudokuBoard[i];
+                var renderedLine = $"| {row[0]} {row[1]} {row[2]} | {row[3]} {row[4]} {row[5]} | {row[6]} {row[7]} {row[8]} |".Replace('0', '-');
+                Console.WriteLine(renderedLine);
+                
             }
-            Console.WriteLine();
+            Console.WriteLine(" -----------------------");
+
         }
-
-
     }
 }
