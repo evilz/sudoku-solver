@@ -5,17 +5,19 @@ namespace Sudoku
     [DebuggerDisplay("Cell : {Row},{Col} = {Val}")]
     public struct Cell
     {
+        private readonly bool _isFix;
         public const int EmptyValue = 0;
 
-        public Cell(int row, int col, int val = EmptyValue)
+        public Cell(int row, int col, int val = EmptyValue,bool isFix = false)
         {
+            _isFix = isFix;
             Row = row;
             Col = col;
             Val = val;
         }
 
-        public int Row { get; }
-        public int Col { get; }
+        public int Row { get; } 
+        public int Col { get; } 
         public int Val { get; }
 
         public bool IsEmpty => Val == EmptyValue;

@@ -8,29 +8,36 @@ namespace Sudoku.Solvers
 {
     class DeepFirstSearchSolver : ISudokuSolver
     {
+
         public SudokuBoard Solve(SudokuBoard sourceBoard)
         {
+            
             var visited = new Stack<Cell>();
             var toVisit = new Stack<Cell>();
 
+            sourceBoard.Where(cell => !cell.IsEmpty)
+                .ToList()
+                .ForEach(cell => visited.Push(cell));
+
+            var sudoku = new SudokuBoard(visited);
             var start = new Random().Next(1, 10);
-            toVisit.Push(new Cell(0, 0, start));
+
+            if (!sudoku.EmptyCells.Any()) return sudoku;
+
+            var firstEmpty = sudoku.EmptyCells.First();
+
+            toVisit.Push(new Cell(firstEmpty.Row, firstEmpty.Col, start));
 
             while (toVisit.Any())
             {
                 var current = toVisit.Pop();
                 visited.Push(current);
 
-                if (current.Row == SudokuBoard.SIZE - 1 && current.Col == SudokuBoard.SIZE - 1)
-                {
-                    return new SudokuBoard(visited);
-                }
+                sudoku = new SudokuBoard(visited);
+                if (!sudoku.EmptyCells.Any()) return sudoku;
 
-                current = current.Col < SudokuBoard.SIZE - 1
-                    ? new Cell(current.Row, current.Col + 1)
-                    : new Cell(current.Row + 1, 0);
+                current = sudoku.EmptyCells.First();
 
-                var sudoku = new SudokuBoard(visited);
                 var neighbours = Enumerable.Range(1, 9)
                                     .Shuffle()
                                     .Where(x => sudoku.IsValid(new Cell(current.Row, current.Col, x)))
@@ -55,7 +62,7 @@ namespace Sudoku.Solvers
                 }
             }
 
-            return new SudokuBoard();
+            return sudoku;
         }
     }
 
