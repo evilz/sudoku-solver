@@ -10,27 +10,40 @@ namespace Sudoku
         public const int SIZE = 9;
         private readonly int[][] _grid;
 
-        public SudokuDifficulty Difficulty { get; set; } = SudokuDifficulty.Easy;
+        public SudokuDifficulty Difficulty { get;  }
+
+        public SudokuBoard(SudokuDifficulty difficulty = SudokuDifficulty.None)
+        {
+            Difficulty = difficulty;
+            _grid = Enumerable.Range(0, SIZE)
+                        .Select(_ => new int[SIZE])
+                        .ToArray();
+        }
         
-        public SudokuBoard(IEnumerable<Cell> cells ) : this()
+        public SudokuBoard(IEnumerable<Cell> cells, SudokuDifficulty difficulty = SudokuDifficulty.None) : this(difficulty)
         {
             foreach (var cell in cells)
                 this[cell.Row, cell.Col] = cell.Val;
         }
 
-        public SudokuBoard()
-        {
-            _grid = Enumerable.Range(0, SIZE)
-                        .Select(_ => new int[SIZE])
-                        .ToArray();
-        }
+        public SudokuBoard(IEnumerable<int> values, SudokuDifficulty difficulty = SudokuDifficulty.None) 
+            : this(GetCellsFromValues(values),difficulty) {}
 
+        private static IEnumerable<Cell> GetCellsFromValues(IEnumerable<int> values)
+        {
+            var val = values.ToArray();
+            var i = 0;
+
+            var cells = from row in Enumerable.Range(0, SIZE)
+                from col in Enumerable.Range(0, SIZE)
+                select new Cell(row, col, val[i++]);
+            return cells;
+        }
+        
         public IEnumerable<Cell> EmptyCells => this.Where(cell => cell.IsEmpty);
 
-        public IEnumerable<IEnumerable<int>> Rows => _grid;
-
-        public IEnumerable<IEnumerable<int>> Columns => this.GroupBy(cell => cell.Col).Select(cells => cells.Select(x => x.Val));
-
+        public IEnumerable<int> AllValues => Enumerable.Range(0, SIZE);  
+        
         public bool IsCellEmpty(int row, int col)
         {
             return new Cell(row,col, this[row, col]).IsEmpty;
@@ -53,7 +66,7 @@ namespace Sudoku
 
         public SudokuBoard Clone()
         {
-           return new SudokuBoard(this);
+            return new SudokuBoard(this, Difficulty);
         }
 
         public IEnumerator<Cell> GetEnumerator()
@@ -71,7 +84,16 @@ namespace Sudoku
 
         public bool IsValid(Cell cell)
         {
-            return CheckRow(cell.Row, cell.Val) && CheckCol(cell.Col, cell.Val) && CheckBox(cell.Row, cell.Col, cell.Val);
+            var tmp = this[cell.Row][cell.Col];
+            this[cell.Row][cell.Col] = 0;
+            var isValid = CheckValueRange(cell.Val) && CheckRow(cell.Row, cell.Val) && CheckCol(cell.Col, cell.Val) && CheckBox(cell.Row, cell.Col, cell.Val);
+            this[cell.Row][cell.Col] = tmp;
+            return isValid;
+        }
+
+        private bool CheckValueRange(int val)
+        {
+            return val > 0 && val <= SIZE;
         }
 
         private bool CheckRow(int row, int num)

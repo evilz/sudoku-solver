@@ -22,7 +22,7 @@ namespace Sudoku
                 int x = int.Parse(Input.ReadLine());
 
                 if (x == 3) { break; }
-                
+
                 var annealingSolver = new SimulatedAnnealingSolver();
 
                 if (x == 1)
@@ -52,6 +52,7 @@ namespace Sudoku
                     {
                         ISudokuSolver solver = new DeepFirstSearchSolver();
                         var solution = solver.Solve(sudoku);
+                        var isOK = solution.IsCompleted;
                         Console.WriteLine("\nSolution found. ");
                         DisplaySudoku(solution);
                         Console.WriteLine("\nOriginal puzzle was:");
@@ -61,17 +62,19 @@ namespace Sudoku
                     if (x1 == 2)
                     {
                         var temp = sudoku.Clone();
-                        
+
                         annealingSolver.SimulatedAnnealingSolve(temp); Console.WriteLine("\nOriginal puzzle was:");
                         DisplaySudoku(sudoku);
                     }
-                    else {
+                    else
+                    {
                         Console.WriteLine("\nDone.");
                     }
 
                 }
 
-                else { //ie. x==2, that is, Solve
+                else
+                { //ie. x==2, that is, Solve
                     Console.WriteLine("\nWould you like to: (Enter 1 or 2) \n1. Input a Sudoku puzzle to Solve \n2. Generate a Sudoku puzzle to Solve");
                     int y = int.Parse(Input.ReadLine());
 
@@ -98,10 +101,11 @@ namespace Sudoku
                         Console.WriteLine("\nOriginal puzzle was:");
 
                         DisplaySudoku(temp);
-                       
+
                     }
 
-                    else { // that is, y==2, ie. Generate puzzle to Solve
+                    else
+                    { // that is, y==2, ie. Generate puzzle to Solve
 
                         var sudoku = SudokuGenerator.NewSudoku(SudokuDifficulty.Easy);
 
@@ -111,16 +115,17 @@ namespace Sudoku
                         {
                             var solver = new DeepFirstSearchSolver();
                             var solution = solver.Solve(sudoku);
-                            
+
                         }
-                        else {
+                        else
+                        {
                             annealingSolver.SimulatedAnnealingSolve(sudoku);
                         }
                     }
                 }
             }
         }
-        
+
         private static void DisplaySudoku(SudokuBoard sudokuBoard)
         {
             for (int i = 0; i < SudokuBoard.SIZE; i++)
@@ -131,12 +136,30 @@ namespace Sudoku
                 }
 
                 var row = sudokuBoard[i];
-                var renderedLine = $"| {row[0]} {row[1]} {row[2]} | {row[3]} {row[4]} {row[5]} | {row[6]} {row[7]} {row[8]} |".Replace('0', '-');
-                Console.WriteLine(renderedLine);
-                
+                Console.Write("| ");
+                DisplayNumber(row[0]);
+                DisplayNumber(row[1]);
+                DisplayNumber(row[2]);
+                Console.Write("| ");
+                DisplayNumber(row[3]);
+                DisplayNumber(row[4]);
+                DisplayNumber(row[5]);
+                Console.Write("| ");
+                DisplayNumber(row[6]);
+                DisplayNumber(row[7]);
+                DisplayNumber(row[8]);
+                Console.WriteLine("|");
+
             }
             Console.WriteLine(" -----------------------");
 
+        }
+
+        private static void DisplayNumber(int num)
+        {
+            Console.ForegroundColor = (ConsoleColor)num;
+            Console.Write(num + " ");
+            Console.ResetColor();
         }
     }
 }

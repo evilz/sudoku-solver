@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Sudoku.Solvers
 {
-    class DeepFirstSearchSolver : ISudokuSolver
+    public class DeepFirstSearchSolver : ISudokuSolver
     {
 
         public SudokuBoard Solve(SudokuBoard sourceBoard)
@@ -20,11 +20,15 @@ namespace Sudoku.Solvers
                 .ForEach(cell => visited.Push(cell));
 
             var sudoku = new SudokuBoard(visited);
-            var start = new Random().Next(1, 10);
-
             if (!sudoku.EmptyCells.Any()) return sudoku;
 
             var firstEmpty = sudoku.EmptyCells.First();
+            
+            var start = Enumerable
+                .Range(1, 9)
+                .Shuffle()
+                .First(x => sudoku.IsValid(new Cell(firstEmpty.Row, firstEmpty.Col, x)));
+            
 
             toVisit.Push(new Cell(firstEmpty.Row, firstEmpty.Col, start));
 

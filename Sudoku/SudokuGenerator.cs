@@ -13,7 +13,7 @@ namespace Sudoku
         {
             _solverGenerator = solverGenerator ?? new DeepFirstSearchSolver();
 
-            var blankboard = new SudokuBoard {Difficulty = difficulty};
+            var blankboard = new SudokuBoard(difficulty);
             return _solverGenerator
                     .Solve(blankboard)
                     .CreateBlankCells();
@@ -28,14 +28,14 @@ namespace Sudoku
 
             while (clone.EmptyCells.Count() < cellToClean)
             {
-                var row = ran.Next(0, 9);
-                var col = ran.Next(0, 9);
+                var row = ran.Next(0, SudokuBoard.SIZE);
+                var col = ran.Next(0, SudokuBoard.SIZE);
                 if (clone.IsCellEmpty(row, col)) continue;
 
                 var oldval = clone[row, col];
                 clone[row, col] = Cell.EmptyValue;
 
-                var possible = Enumerable.Range(1, 9).Where(x => clone.IsValid(new Cell(row, col, x)));
+                var possible = Enumerable.Range(1, SudokuBoard.SIZE).Where(x => clone.IsValid(new Cell(row, col, x)));
 
                 if (possible.Count() != 1)
                 {
